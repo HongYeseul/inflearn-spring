@@ -4,6 +4,7 @@ import hello.core.Order.OrderService;
 import hello.core.Order.OrderServiceImpl;
 import hello.core.discount.DiscountPolicy;
 import hello.core.discount.FixDiscountPolicy;
+import hello.core.discount.RateDiscountPolicy;
 import hello.core.member.MemberRepository;
 import hello.core.member.MemberService;
 import hello.core.member.MemberServiceImpl;
@@ -17,7 +18,8 @@ public class AppConfig { // 리팩토링: cmd+option+m -> 역할에 대한 구�
     }
 
     public DiscountPolicy discountPolicy() {
-        return new FixDiscountPolicy();
+//        return new FixDiscountPolicy();
+        return new RateDiscountPolicy(); // 교체가 쉽다!
     }
 
     //

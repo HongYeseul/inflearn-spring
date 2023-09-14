@@ -37,7 +37,7 @@ public class ApplicationContextExtendsFindTest {
     @Test
     @DisplayName("부모 타입으로 조회시, 자식이 둘 이상 있으면, 특정 하위 타입으로 조회") // 물론 안좋은 방법!
     void findBeanBySubType(){
-        RateDiscountPolicy bean = ac.getBean(RateDiscountPolicy.class);
+        RateDiscountPolicy bean = ac.getBean("rateDiscountPolicy",RateDiscountPolicy.class);
         assertThat(bean).isInstanceOf(RateDiscountPolicy.class);
     }
 

@@ -1,9 +1,6 @@
 package hello.core.lifecycle;
 
-import org.springframework.beans.factory.DisposableBean;
-import org.springframework.beans.factory.InitializingBean;
-
-public class NetworkClient implements InitializingBean, DisposableBean {
+public class NetworkClient {
 
     private String url;
 
@@ -30,23 +27,20 @@ public class NetworkClient implements InitializingBean, DisposableBean {
     }
 
 
-    // < 초기화, 소멸 인터페이스 단점 >
-    // - 이 인터페이스들은 스프링 전용 인터페이스다. 해당 코드가 스프링 전용 인터페이스에 의존한다.
-    // - 초기화, 소멸 메서드의 이름을 변경할 수 없다.
-    // - 내가 코드를 고칠 수 없는 외부 라이브러리에 적용 할 수 없다.
-    // >> 인터페이스를 사용하는 초기화 종료 방법은 스프링 초창기에 나온 방법들이고, 지금은 다음의 더 나은 방법들이 있어서 거의 사용하지 않는다.
-    @Override
-    public void afterPropertiesSet() throws Exception {
+    // << 설정정보 사용 특징 >>
+    // 메서드 이름을 자유롭게 줄 수 있다.
+    // 스프링 빈이 스프링 코드에 의존하지 않는다.
+    // 코드가 아니라 설정 정보를 사용하기 때문에 코드를 고칠 수 없는 외부 라이브러리에도 초기화, 종료 메서드를 적용할 수 있다.
+
+    public void init() {
         // 프로퍼티 세팅이 끝나면(의존관계 주입이 끝나면) 호출
-        System.out.println("NetworkClient.afterPropertiesSet");
+        System.out.println("NetworkClient.init");
         connect();
         call("초기화 연결 메시지");
-
     }
 
-    @Override
-    public void destroy() throws Exception {
-        System.out.println("NetworkClient.destroy");
+    public void close() {
+        System.out.println("NetworkClient.close");
         disconnect();
     }
 }

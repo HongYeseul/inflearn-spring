@@ -14,14 +14,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class LogDemoController {
 
     private final LogDemoService logDemoService;
-    private final ObjectProvider<MyLogger> myLoggerProvider;
+    private final MyLogger myLogger;
 
     @RequestMapping("log-demo")
     @ResponseBody
     public String logDemo(HttpServletRequest request){
         String requestURL = request.getRequestURL().toString();
-        MyLogger myLogger = myLoggerProvider.getObject(); // 만들어 지는 시점 -> init()으로 uuid 생성
-        myLogger.setRequestURL(requestURL);
+
+        System.out.println("myLogger = " + myLogger.getClass()); // 진짜 내가 mylog가 아니라 껍데기.
+        // = CGLIB라는 라이브러리로 내 클래스를 상속 받은 가짜 프록시 객체를 만들어서 주입한다.
+        myLogger.setRequestURL(requestURL); // 이때 진짜 mylogger를 찾아 동작(provider가 동작했던 것처럼)
 
         myLogger.log("controller test");
         logDemoService.logic("testId");
